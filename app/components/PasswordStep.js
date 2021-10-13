@@ -7,13 +7,19 @@ class PasswordStep extends React.Component {
     }
     return(
       <div>
-        <label>Пароль</label>
+        <label>Пароль </label>
         <input
           name="password"
           type="password"
           placeholder="Введите пароль"
           value={this.props.password}
           onChange={this.props.handleChange}
+          style={{
+            borderColor: this.props.passwordColor,
+            padding: (20, 10),
+            boxSizing: 'border-box',
+            fontSize: 16,
+          }}
         />
       </div>
     );

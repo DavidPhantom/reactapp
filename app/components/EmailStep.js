@@ -14,6 +14,12 @@ class EmailStep extends React.Component {
           placeholder="Введите email"
           value={this.props.email}
           onChange={this.props.handleChange}
+          style={{
+            borderColor: this.props.emailColor,
+            padding: (20, 10),
+            boxSizing: 'border-box',
+            fontSize: 16,
+          }}
         />
       </div>
     );

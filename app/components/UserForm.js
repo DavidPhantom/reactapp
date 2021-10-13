@@ -8,14 +8,48 @@ class UserForm extends React.Component {
     super(props)
     this.state = {
       currentStep: 1,
-      username: '',
-      email:  '',
-      password: '',
+      username: 'Tom', nameValid : true,
+      email:  'tom@mail.ru', emailValid: true,
+      password: '1234567', passwordValid: true,
+      disabled: false,
     }
+  }
+
+  validateName(name){
+    return name.length>2;
+  }
+  validateEmail(email){
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+  validatePassword(password){
+    return password.length>6;
   }
 
   handleChange = event => {
     const {name, value} = event.target
+    switch (name) {
+      case 'username':
+        var valid = this.validateName(value);
+        this.setState({
+          nameValid: valid,
+          disabled: !valid,
+        })
+        break;
+      case 'email':
+        var valid = this.validateEmail(value);
+        this.setState({
+          emailValid: valid,
+          disabled: !valid,
+        })
+        break;
+      default:
+        var valid = this.validatePassword(value);
+        this.setState({
+          passwordValid: valid,
+          disabled: !valid,
+        })
+    }
     this.setState({
       [name]: value
     })
@@ -47,7 +81,19 @@ class UserForm extends React.Component {
     let currentStep = this.state.currentStep;
     if(currentStep !==1){
       return (
-        <button type="button" onClick={this._prev}>Назад</button>
+        <button
+          type="button"
+          disabled={this.state.disabled}
+          onClick={this._prev}
+          style={{
+            padding: 15,
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            margin: (10, 10),
+            fontSize: 16
+          }}
+        >Назад</button>
       )
     }
     return null;
@@ -57,7 +103,19 @@ class UserForm extends React.Component {
     let currentStep = this.state.currentStep;
     if(currentStep <3){
       return (
-        <button type="button" onClick={this._next}>Вперед</button>
+        <button
+          type="button"
+          disabled={this.state.disabled}
+          onClick={this._next}
+          style={{
+            padding: 15,
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            margin: (10, 10),
+            fontSize: 16
+          }}
+        >Вперед</button>
       )
     }
     return null;
@@ -67,16 +125,29 @@ class UserForm extends React.Component {
     let currentStep = this.state.currentStep;
     if(currentStep === 3){
       return (
-        <button>Отправить</button>
+        <button
+          disabled={this.state.disabled}
+          style={{
+            padding: 15,
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            margin: (10, 0),
+            fontSize: 16
+          }}
+        >Отправить</button>
       )
     }
     return null;
   }
 
   render() {
+    var nameColor = this.state.nameValid===true?"green":"red";
+    var emailColor = this.state.emailValid===true?"green":"red";
+    var passwordColor = this.state.passwordValid===true?"green":"red";
     return (
       <div>
-        <h1>Форма входа</h1>
+        <h1>Форма пользователя</h1>
         <p>Шаг {this.state.currentStep} </p>
 
         <form onSubmit={this.handleSubmit}>
@@ -84,16 +155,19 @@ class UserForm extends React.Component {
             currentStep={this.state.currentStep}
             handleChange={this.handleChange}
             username={this.state.username}
+            nameColor={nameColor}
           />
           <EmailStep
             currentStep={this.state.currentStep}
             handleChange={this.handleChange}
             email={this.state.email}
+            emailColor={emailColor}
           />
           <PasswordStep
             currentStep={this.state.currentStep}
             handleChange={this.handleChange}
             password={this.state.password}
+            passwordColor={passwordColor}
           />
           <p>
             {this.previousButton()}

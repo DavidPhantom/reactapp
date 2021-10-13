@@ -15,6 +15,12 @@ class UserNameStep extends React.Component {
           placeholder="Введите имя"
           value={this.props.username}
           onChange={this.props.handleChange}
+          style={{
+            borderColor: this.props.nameColor,
+            padding: (20, 10),
+            boxSizing: 'border-box',
+            fontSize: 16,
+          }}
         />
       </div>
     );
